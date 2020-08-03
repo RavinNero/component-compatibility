@@ -1,6 +1,7 @@
 const express = require('express');
 const userController = require('../src/controllers/userController');
 const mbController = require('../src/controllers/motherBoardsController');
+const cpuController = require('../src/controllers/cpuController');
 
 const Route = express.Router();
 
@@ -30,5 +31,22 @@ Route.put('/mother-boards/:id', mbController.update);
 
 Route.delete('/mother-boards/:id', mbController.delete);
 
+
+// Cpu
+
+Route.get('/cpus', cpuController.index);
+
+Route.get('/cpus/:id', cpuController.show);
+
+Route.post('/cpus', cpuController.store);
+
+Route.put('/cpus/:id', cpuController.update);
+
+Route.delete('/cpus/:id', cpuController.delete);
+
+
+// Compatibility
+
+Route.post('/cpus-compatible', mbController.listCpusCompatible);
 
 module.exports = Route;

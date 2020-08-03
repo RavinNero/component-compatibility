@@ -57,21 +57,45 @@ module.exports = {
         return mb;
     },
 
-    async storeMb(model, chipset){
+    async findMbByTitle(mother_board){
+        const mb = await connection('mother_boards')
+        .select('*')
+        .where({
+            title: mother_board
+        }).then(function(rows){
+            if(rows){
+                return rows[0];
+            }else{
+                return 0;
+            }
+        }).catch(function(error){
+            return error;
+        });
+
+        return mb;
+    },
+
+    async storeMb(request){
         const mb = await connection('mother_boards')
         .insert({
-            user_id: 1,
-            model: model,
-            chipset: chipset
-        })
-        .then(function(row){
+            user_id: request.user_id,
+            title: request.title,
+            brand_name: request.brand_name,
+            model: request.model,
+            chipset: request.chipset,
+            socket: request.socket,
+            memory_compatibility: request.memory_compatibility,
+            form_factor: request.form_factor,
+            max_tdp: request.max_tdp
+        }).then(function(row){
             if(row){
                 return 1;
             }else{
                 return 0;
             }
-        })
-        .catch(function(error){
+            
+        }).catch(function(error){
+            console.error(error);
             return error;
         });
 
@@ -81,8 +105,14 @@ module.exports = {
     async updateMb(id, request){
         const mb = await connection('mother_boards')
         .update({
+            title: request.title,
+            brand_name: request.brand_name,
             model: request.model,
-            chipset: request.chipset
+            chipset: request.chipset,
+            socket: request.socket,
+            memory_compatibility: request.memory_compatibility,
+            form_factor: request.form_factor,
+            max_tdp: request.max_tdp
         })
         .where({
             id:id
